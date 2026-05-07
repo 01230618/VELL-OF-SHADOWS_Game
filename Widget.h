@@ -14,7 +14,6 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include "Rule.h"
-#include "QCamera.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

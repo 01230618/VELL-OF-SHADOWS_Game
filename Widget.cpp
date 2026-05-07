@@ -119,7 +119,7 @@ void Widget::on_level_1_clicked()
     clearCurrentMonsters();
     loadLevel1MonsterPics();
     initLevel1Monsters();
-    curLevel=1;
+    curLevel = 1;
     monstermoveTimer->start(70);
     //特效设置
     if(MonsterBulletTimer){
@@ -138,18 +138,22 @@ void Widget::on_level_1_clicked()
     ui->back->show();
     ui->mainBg->hide();
 
-    //场景一背景设置
     if(levelBg){
         levelBg->hide();
-        delete levelBg;
+        levelBg->deleteLater();
         levelBg = nullptr;
     }
+    // 创建背景
     levelBg = new QLabel(this);
     levelBg->setPixmap(QPixmap(":/images/level_1.png"));
-    levelBg->setGeometry(0,0,960,540);
-    levelBg->setScaledContents(1);
-    levelBg->lower();
+    levelBg->setGeometry(0, 0, 960, 540);
+    levelBg->setScaledContents(true);
+    levelBg->lower(); // 放到底层
     levelBg->show();
+
+    //障碍物相关
+    iniLevel1Obstacles();
+    iniLevel1TrapDead();
 
     //玩家动画设置
     PlayerPicload();
@@ -169,10 +173,6 @@ void Widget::on_level_1_clicked()
     player->raise();
     playermoveTimer->start(60);
 
-    //障碍物相关
-    iniLevel1Obstacles();
-    iniLevel1TrapDead();
-
     //战斗属性设置
     iniPlayerHPBar();
     pla.isSuccessed=false;
@@ -183,6 +183,10 @@ void Widget::on_level_1_clicked()
     pla.hp=pla.maxHP;
     pla.attackTime=0;
     pla.killcount=0;
+    pla.attackedBack = false;
+    pla.Backlast = 0;
+    pla.playAttackedAni = false;
+    pla.playerBackedPic = 0;
 
     //介绍页面
     beginGame=false;
@@ -429,6 +433,10 @@ void Widget::on_level_2_clicked()
     pla.killcount=0;
     iniPlayerHPBar();
     pla.hurtTime = 0;
+    pla.attackedBack = false;
+    pla.Backlast = 0;
+    pla.playAttackedAni = false;
+    pla.playerBackedPic = 0;
 
     //障碍物设置
     iniLevel2Obstacles();
@@ -545,6 +553,10 @@ void Widget::on_level_3_clicked()
     pla.killcount=0;
     iniPlayerHPBar();
     pla.hurtTime = 0;
+    pla.attackedBack = false;
+    pla.Backlast = 0;
+    pla.playAttackedAni = false;
+    pla.playerBackedPic = 0;
 
     //障碍物设置
     iniLevel3Obstacles();
@@ -802,6 +814,7 @@ void Widget::clearAll(){
     pla.isAttacked = false;
     pla.isAttacking = false;
     pla.isSuccessed = false;
+    pla.attackedBack = false;
 
     //清理当前剑光特效
     for(int i = 0; i < pla.sowrdEffectList.size(); i++)
@@ -1031,6 +1044,8 @@ void Widget::PlayerPicload()
     pla.playerPicright.clear();
     pla.playerFightLeft.clear();
     pla.playerFightRight.clear();
+    pla.playerAttackedLeft.clear();
+    pla.playerAttackedRight.clear();
 
     QString basePath;
     switch(pla.curRole)
@@ -1081,6 +1096,14 @@ void Widget::PlayerPicload()
     pla.playerFightRight<< QPixmap(basePath + "/fight/right1.png")
                      << QPixmap(basePath + "/fight/right2.png")
                      << QPixmap(basePath + "/fight/right3.png");
+
+    //加载后退帧
+    pla.playerAttackedLeft<< QPixmap(basePath + "/back/left1.png")
+                           << QPixmap(basePath + "/back/left2.png")
+                           << QPixmap(basePath + "/back/left3.png");
+    pla.playerAttackedRight<< QPixmap(basePath + "/back/right1.png")
+                            << QPixmap(basePath + "/back/right2.png")
+                            << QPixmap(basePath + "/back/right3.png");
 }
 
 //加载场景1怪物图片
@@ -1520,7 +1543,6 @@ void Widget::on_role_btn_clicked()
 void Widget::movePlayer(){
 
     if(!beginGame) return;
-
     if(!player) return;
 
     int originalX=player->x();
@@ -1628,6 +1650,59 @@ void Widget::movePlayer(){
             pla.isAttacking = false;
             pla.attackTime = 0;
             pla.playerAttackPic = 0;
+            curPic=pla.playerPicStand;
+            player->setPixmap(curPic);
+            player->setScaledContents(1);
+            player->setFixedSize(50,150);
+        }
+    }
+    else if(pla.attackedBack)
+    {
+        bool canmove = true;
+        int step = 10;
+
+        if(pla.BackDir == 3)
+        {
+            if(curLevel == 2&&player->x() - step < 270){
+                canmove = false;
+            }
+            if(curLevel == 3&&player->x() - step < 335){
+                canmove = false;
+            }
+            if(canmove){
+                player->move(player->x() - step, player->y());
+            }
+        }
+        if(pla.BackDir == 4)
+        {
+            if(curLevel == 2&&player->x() + step +80 > 690){
+                canmove = false;
+            }
+            if(curLevel == 3&&player->x() + step +80 > 625){
+                canmove = false;
+            }
+            if(canmove){
+                player->move(player->x() + step, player->y());
+            }
+        }
+        if(pla.playerBackedPic < pla.playerAttackedRight.size())
+        {
+            if(pla.BackDir == 3)
+            {
+                curPic = pla.playerAttackedRight[pla.playerBackedPic];
+            }
+            else
+            {
+                curPic = pla.playerAttackedLeft[pla.playerBackedPic];
+            }
+            player->setPixmap(curPic);
+            player->setScaledContents(1);
+            player->setFixedSize(100,150);
+            pla.playerBackedPic++;
+        }
+        else{
+            pla.attackedBack = false;
+            pla.playerBackedPic = 0;
             curPic=pla.playerPicStand;
             player->setPixmap(curPic);
             player->setScaledContents(1);
@@ -1893,7 +1968,7 @@ void Widget::moveMonster(){
         }
     }
 
-    else if(curLevel==2){
+    else if(curLevel == 2){
 
         if(pla.atkCd>0) pla.atkCd--;
 
@@ -2000,6 +2075,21 @@ void Widget::moveMonster(){
                 qDebug()<<"玩家被攻击，当前血量："<<pla.hp;
                 updatePlayerHPBar();
 
+                if(!pla.isAttacking){
+                    int dx = player->x() - m.monster_x;
+                    if(dx > 0)
+                    {
+                        pla.BackDir = 4;
+                    }
+                    else
+                    {
+                        pla.BackDir = 3;
+                    }
+
+                    pla.attackedBack = true;
+                    pla.playerBackedPic = 0;
+                }
+
                 // 玩家死亡
                 if(pla.hp<=0){
                     pla.hp=0;
@@ -2025,6 +2115,8 @@ void Widget::moveMonster(){
             if(pla.hurtTime>2){
                 pla.isAttacked=false;
                 pla.hurtTime = 0;
+                pla.attackedBack = false;
+                pla.playerBackedPic = 0;
             }
         }
         if(pla.isAttacking&&pla.atkCd<=0)
@@ -2274,6 +2366,21 @@ void Widget::moveMonster(){
                 qDebug()<<"玩家被攻击，当前血量："<<pla.hp;
                 updatePlayerHPBar();
 
+                if(!pla.isAttacking){
+                    int dx = player->x() - m.monster_x;
+                    if(dx > 0)
+                    {
+                        pla.BackDir = 4;
+                    }
+                    else
+                    {
+                        pla.BackDir = 3;
+                    }
+
+                    pla.attackedBack = true;
+                    pla.playerBackedPic = 0;
+                }
+
                 // 玩家死亡
                 if(pla.hp<=0){
                     pla.hp=0;
@@ -2302,6 +2409,8 @@ void Widget::moveMonster(){
             if(pla.hurtTime>3){
                 pla.isAttacked=false;
                 pla.hurtTime = 0;
+                pla.attackedBack = false;
+                pla.playerBackedPic = 0;
                 for(int i=1;i<=2;i++){
                     Monster &m = level3Monsters[i];
                     if(m.isDead||!m.label||!m.monsterHpbar) continue;
@@ -2531,7 +2640,7 @@ void Widget::keyPressEvent(QKeyEvent *event){
         pla.right=true;
         break;
     case Qt::Key_J:
-        if(curLevel==1){
+        if(curLevel == 1){
             return;
         }
         if (event->isAutoRepeat()) return;
@@ -2546,7 +2655,7 @@ void Widget::keyPressEvent(QKeyEvent *event){
         }
         break;
     case Qt::Key_L:
-        if(curLevel==1){
+        if(curLevel == 1){
             return;
         }
         if (event->isAutoRepeat()) return;
@@ -2561,7 +2670,7 @@ void Widget::keyPressEvent(QKeyEvent *event){
         }
         break;
     case Qt::Key_K:
-        if(curLevel!=1&& !pla.isDefending && !pla.defenseCoolDown){
+        if(curLevel != 1&& !pla.isDefending && !pla.defenseCoolDown){
             pla.isDefending = true;
             pla.defenseCoolDown = true;
 
@@ -2596,7 +2705,7 @@ void Widget::keyPressEvent(QKeyEvent *event){
         }
         break;
     case Qt::Key_I:
-        if(curLevel==3 && !pla.isPlayerStealth && pla.stealthUseCount > 0 && !pla.stealthCooldown)
+        if(curLevel == 3 && !pla.isPlayerStealth && pla.stealthUseCount > 0 && !pla.stealthCooldown)
         {
             // 开启隐身
             pla.isPlayerStealth = true;

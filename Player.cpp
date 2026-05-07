@@ -22,6 +22,11 @@ Player::Player() {
     isSuccessed = false;
     atkCd = 0;
     hurtTime=0;
+    attackedBack = false;
+    BackDir = 0;
+    Backlast = 0;
+    playAttackedAni = false;
+    playerBackedPic = 0;
 
     maxHP = 100;
     hp = maxHP;

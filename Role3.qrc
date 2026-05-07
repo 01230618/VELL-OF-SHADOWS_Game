@@ -19,5 +19,11 @@
         <file>role3/left/1.png</file>
         <file>role3/left/2.png</file>
         <file>role3/left/3.png</file>
+        <file>role3/back/left1.png</file>
+        <file>role3/back/left2.png</file>
+        <file>role3/back/left3.png</file>
+        <file>role3/back/right1.png</file>
+        <file>role3/back/right2.png</file>
+        <file>role3/back/right3.png</file>
     </qresource>
 </RCC>

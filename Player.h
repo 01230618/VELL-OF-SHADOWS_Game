@@ -39,6 +39,8 @@ public:
     QPixmap playerPicStand;
     QList<QPixmap> playerFightLeft;
     QList<QPixmap> playerFightRight;
+    QList<QPixmap> playerAttackedLeft;
+    QList<QPixmap> playerAttackedRight;
 
     //动画逻辑
     int playermoveCount;
@@ -53,6 +55,11 @@ public:
     bool isSuccessed;       //人物是否获得胜利
     int atkCd;             //冷却
     int hurtTime;          //受伤时间
+    bool attackedBack;     //是否被攻击后退
+    int BackDir;           //后退方向
+    int Backlast;          //后退持续时间
+    bool playAttackedAni;  //是否播放后退动画
+    int playerBackedPic;    //人物后退动画帧序号
 
     // 血量
     int hp;        //人物当前血量
