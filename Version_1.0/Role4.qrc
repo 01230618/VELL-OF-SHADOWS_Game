@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>role4/stand.png</file>
+        <file>role4/up/1.png</file>
+        <file>role4/up/2.png</file>
+        <file>role4/up/3.png</file>
+        <file>role4/down/1.png</file>
+        <file>role4/down/2.png</file>
+        <file>role4/down/3.png</file>
+        <file>role4/fight/left1.png</file>
+        <file>role4/fight/left2.png</file>
+        <file>role4/fight/left3.png</file>
+        <file>role4/fight/right1.png</file>
+        <file>role4/fight/right2.png</file>
+        <file>role4/fight/right3.png</file>
+        <file>role4/left/1.png</file>
+        <file>role4/left/2.png</file>
+        <file>role4/left/3.png</file>
+        <file>role4/right/1.png</file>
+        <file>role4/right/2.png</file>
+        <file>role4/right/3.png</file>
+    </qresource>
+</RCC>
