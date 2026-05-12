@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/ruleBg.png</file>
+        <file>ui/introBg.png</file>
+    </qresource>
+</RCC>

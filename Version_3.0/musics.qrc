@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>music/level_1BGM.ogg</file>
+        <file>music/level_2BGM.ogg</file>
+        <file>music/level_3BGM.ogg</file>
+        <file>music/mainBGM.ogg</file>
+        <file>music/playerFight.mp3</file>
+        <file>music/winBGM.ogg</file>
+    </qresource>
+</RCC>

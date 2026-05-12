@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Intro</class>
+ <widget class="QWidget" name="Intro">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <italic>true</italic>
+    <kerning>true</kerning>
+    <hintingpreference>PreferNoHinting</hintingpreference>
+    <fontweight>ExtraBold</fontweight>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="background">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>540</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>ui/introBg.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="introduction">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>165</y>
+     <width>560</width>
+     <height>220</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>方正隶书_GBK</family>
+     <pointsize>12</pointsize>
+     <italic>true</italic>
+     <kerning>true</kerning>
+     <hintingpreference>PreferNoHinting</hintingpreference>
+     <fontweight>ExtraBold</fontweight>
+    </font>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="start">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>400</y>
+     <width>100</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton#start {
+    background-color: rgba(52, 65, 60, 220);
+    color: #e8e2d5;
+    border: 1px solid rgba(110, 130, 120, 170);
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+QPushButton#start:hover {
+    background-color: rgba(68, 83, 77, 230);
+    border-color: rgba(135, 155, 145, 190);
+}</string>
+   </property>
+   <property name="text">
+    <string>开始闯关</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
