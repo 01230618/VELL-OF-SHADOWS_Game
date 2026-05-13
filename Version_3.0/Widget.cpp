@@ -1142,18 +1142,18 @@ void Widget::movePlayer(){
     {
         pla.attackTime++;
         if(pla.playerDir==3){
-            pla.playerAttackPic++;
             if(pla.playerAttackPic >= pla.playerFightLeft.size()){
                 pla.playerAttackPic = pla.playerFightLeft.size()-1;
             }
             curPic=pla.playerFightLeft[pla.playerAttackPic];
+            pla.playerAttackPic++;
         }
         else if(pla.playerDir==4){
-            pla.playerAttackPic++;
             if(pla.playerAttackPic >= pla.playerFightRight.size()){
                 pla.playerAttackPic = pla.playerFightRight.size()-1;
             }
             curPic=pla.playerFightRight[pla.playerAttackPic];
+            pla.playerAttackPic++;
         }
 
         player->setPixmap(curPic);
@@ -1277,7 +1277,6 @@ void Widget::moveMonster(){
         curMonsters = &level3.getMonsters();
     }
 
-    //未排查出程序崩溃原因时，AI提供防崩溃代码
     if (!curMonsters || curMonsters->isEmpty())
         return;
 
@@ -1546,6 +1545,7 @@ void Widget::moveMonster(){
                     QMessageBox::information(this, "提示", "你被怪物击败，挑战失败！");
                     clearAll();
                     backHome();
+                    return;
                 }
             }
         }
@@ -1793,7 +1793,6 @@ void Widget::moveMonster(){
             QRect fightRect(m.monster_x-20,m.monster_y-10,80,90);
 
             if(pla.isDefending||pla.isPlayerStealth||pla.isAttacked) continue;
-
 
             if(m.isAlive&&fightRect.intersects(player->geometry()))
             {
