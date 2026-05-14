@@ -299,7 +299,7 @@ void Widget::on_level_2_clicked()
     player->move(480,360);
     player->show();
     player->raise();
-    playermoveTimer->start(50);
+    playermoveTimer->start(90);
 
     //场景二怪物设置
     clearCurrentMonsters();
@@ -399,7 +399,7 @@ void Widget::on_level_3_clicked()
     player->move(480,320);
     player->show();
     player->raise();
-    playermoveTimer->start(50);
+    playermoveTimer->start(80);
 
     //战斗属性设置
     pla.isSuccessed=false;
@@ -1046,25 +1046,38 @@ void Widget::movePlayer(){
     int y=originalY;
     pla.ismoving=false;
     int step=5;
+    int step2=8;
     if(pla.up){
         pla.ismoving=true;
         pla.playerDir=2;
-        y-=step;
+        if(curLevel!=1){
+            y-=step2;
+        }
+        else y-=step;
     }
     if(pla.down){
         pla.ismoving=true;
         pla.playerDir=1;
-        y+=step;
+        if(curLevel!=1){
+            y+=step2;
+        }
+        else y+=step;
     }
     if(pla.left){
         pla.ismoving=true;
         pla.playerDir=3;
-        x-=step;
+        if(curLevel!=1){
+            x-=step2;
+        }
+        else x-=step;
     }
     if(pla.right){
         pla.ismoving=true;
         pla.playerDir=4;
-        x+=step;
+        if(curLevel!=1){
+            x+=step2;
+        }
+        else x+=step;
     }
     if(x<0) x=0;
     if(y<0) y=0;
@@ -1160,7 +1173,7 @@ void Widget::movePlayer(){
         player->setScaledContents(1);
         player->setFixedSize(80,150);
 
-        if(pla.attackTime > 3 )
+        if(pla.playerAttackPic >= 3 )
         {
             pla.isAttacking = false;
             pla.attackTime = 0;
